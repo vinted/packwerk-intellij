@@ -1,18 +1,16 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.olegvinted.packwerkintellij</id>
-    <name>packwerk-intellij Template</name>
+    <name>Packwerk Linter</name>
     <vendor>oleg-vinted</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.ruby</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.olegvinted.packwerkintellij.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <externalAnnotator language="ruby"
+                           implementationClass="com.github.olegvinted.packwerkintellij.annotators.PackwerkAnnotator"/>
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.olegvinted.packwerkintellij.listeners.MyFrameStateListener" topic="com.intellij.ide.FrameStateListener"/>
-    </applicationListeners>
 </idea-plugin>
