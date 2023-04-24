@@ -1,8 +1,8 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.olegvinted.packwerkintellij</id>
+    <id>com.vinted.packwerkintellij</id>
     <name>Packwerk Linter</name>
-    <vendor>oleg-vinted</vendor>
+    <vendor>Vinted</vendor>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.ruby</depends>
@@ -11,6 +11,6 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <externalAnnotator language="ruby"
-                           implementationClass="com.github.olegvinted.packwerkintellij.annotators.PackwerkAnnotator"/>
+                           implementationClass="com.vinted.packwerkintellij.annotators.PackwerkAnnotator"/>
     </extensions>
 </idea-plugin>

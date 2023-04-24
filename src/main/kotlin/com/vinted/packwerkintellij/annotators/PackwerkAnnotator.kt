@@ -1,4 +1,4 @@
-package com.github.olegvinted.packwerkintellij.annotators
+package com.vinted.packwerkintellij.annotators
 
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.lang.annotation.AnnotationHolder

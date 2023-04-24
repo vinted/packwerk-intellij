@@ -1,4 +1,4 @@
-package com.github.olegvinted.packwerkintellij
+package com.vinted.packwerkintellij
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls
