@@ -7,6 +7,8 @@ import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 import org.intellij.markdown.lexer.push
+import org.jetbrains.plugins.ruby.ruby.lang.psi.references.RColonReference
+import org.jetbrains.plugins.ruby.ruby.lang.psi.variables.RConstant
 import java.nio.charset.Charset
 import java.util.*
 
@@ -61,6 +63,12 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
             val offset = document.getLineStartOffset(problem.line - 1) + problem.column
 
             var el = file.findElementAt(offset)
+
+            // Expand compound constants (e.g. Foo::Bar)
+            while (el != null && (el.parent is RConstant || el.parent is RColonReference)) {
+                el = el.parent
+            }
+
             if (el == null) { el = file }
 
             holder
