@@ -16,13 +16,12 @@ import java.nio.charset.Charset
 import java.util.*
 
 const val PACKWERK_BINSTUB_PATH = "bin/packwerk"
+private val VIOLATION_PATTERN = Regex("^[^:]+:([0-9]+):([0-9]+)$")
 
 internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, PackwerkAnnotator.Results>() {
     internal class State(var file: PsiFile)
     internal class Results(var problems: List<Problem>)
     internal class Problem(var line: Int, var column: Int, var explanation: String)
-
-    private val violationPattern = Regex("^[^:]+:([0-9]+):([0-9]+)$")
 
     override fun collectInformation(file: PsiFile): State? {
         if (FileDocumentManager.getInstance().isFileModified(file.virtualFile)) {
@@ -58,7 +57,7 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
         val problems = ArrayList<Problem>()
 
         while (scanner.hasNextLine()) {
-            val matches = violationPattern.matchEntire(scanner.nextLine())
+            val matches = VIOLATION_PATTERN.matchEntire(scanner.nextLine())
             if (matches != null) {
                 val lineNumber = Integer.valueOf(matches.groupValues[1]) - 1
                 val columnNumber = Integer.valueOf(matches.groupValues[2]) - 1
