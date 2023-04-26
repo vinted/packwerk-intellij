@@ -6,6 +6,7 @@ import com.intellij.lang.annotation.ExternalAnnotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 import org.intellij.markdown.lexer.push
@@ -13,6 +14,8 @@ import org.jetbrains.plugins.ruby.ruby.lang.psi.references.RColonReference
 import org.jetbrains.plugins.ruby.ruby.lang.psi.variables.RConstant
 import java.nio.charset.Charset
 import java.util.*
+
+const val PACKWERK_BINSTUB_PATH = "bin/packwerk"
 
 internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, PackwerkAnnotator.Results>() {
     internal class State(var file: PsiFile)
@@ -27,6 +30,14 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
             return null
         }
 
+        val binstubFile = LocalFileSystem.getInstance().findFileByPath(
+            file.project.basePath + "/" + PACKWERK_BINSTUB_PATH
+        )
+        if (binstubFile == null || !binstubFile.exists()) {
+            thisLogger().debug("Not linting because Packwerk binstub was not found")
+            return null
+        }
+
         return State(file)
     }
 
@@ -37,7 +48,7 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
                 .removePrefix(collectedInfo.file.project.basePath.toString())
                 .removePrefix("/")
 
-        val cmd = GeneralCommandLine("bin/packwerk")
+        val cmd = GeneralCommandLine(PACKWERK_BINSTUB_PATH)
         cmd.withWorkDirectory(collectedInfo.file.project.basePath)
 
         cmd.charset = Charset.forName("UTF-8")
