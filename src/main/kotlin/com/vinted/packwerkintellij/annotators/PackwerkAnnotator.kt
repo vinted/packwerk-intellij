@@ -62,8 +62,8 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
         while (scanner.hasNextLine()) {
             val matches = violationPattern.matchEntire(scanner.nextLine())
             if (matches != null) {
-                val lineNumber = Integer.valueOf(matches.groupValues[1])
-                val columnNumber = Integer.valueOf(matches.groupValues[2])
+                val lineNumber = Integer.valueOf(matches.groupValues[1]) - 1
+                val columnNumber = Integer.valueOf(matches.groupValues[2]) - 1
                 val explanation = scanner.nextLine()
 
                 problems.push(Problem(lineNumber, columnNumber, explanation))
@@ -77,7 +77,16 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
         val document = PsiDocumentManager.getInstance(file.project).getDocument(file) ?: return
 
         for (problem in annotationResult.problems) {
-            val offset = document.getLineStartOffset(problem.line - 1) + problem.column
+            if (problem.line < 0 || problem.line >= document.lineCount) {
+                continue
+            }
+
+            val lineEndOffset = document.getLineEndOffset(problem.line)
+            val offset = document.getLineStartOffset(problem.line) + problem.column + 1
+
+            if (offset >= lineEndOffset) {
+                continue
+            }
 
             var el = file.findElementAt(offset)
 
