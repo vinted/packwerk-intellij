@@ -42,8 +42,6 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
     }
 
     override fun doAnnotate(collectedInfo: State): Results {
-        // FIXME: think of a better way do do this
-        // FIXME: handle virtual (e.g. remote) files
         val relativePath = collectedInfo.file.virtualFile.path
                 .removePrefix(collectedInfo.file.project.basePath.toString())
                 .removePrefix("/")
