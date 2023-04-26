@@ -4,6 +4,8 @@ import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.ExternalAnnotator
 import com.intellij.lang.annotation.HighlightSeverity
+import com.intellij.openapi.diagnostic.thisLogger
+import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 import org.intellij.markdown.lexer.push
@@ -19,13 +21,17 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
 
     private val violationPattern = Regex("^[^:]+:([0-9]+):([0-9]+)$")
 
-    override fun collectInformation(file: PsiFile): State {
+    override fun collectInformation(file: PsiFile): State? {
+        if (FileDocumentManager.getInstance().isFileModified(file.virtualFile)) {
+            thisLogger().debug("Not linting because the file is modified")
+            return null
+        }
+
         return State(file)
     }
 
     override fun doAnnotate(collectedInfo: State): Results {
         // FIXME: think of a better way do do this
-        // FIXME: handle unsaved files
         // FIXME: handle virtual (e.g. remote) files
         val relativePath = collectedInfo.file.virtualFile.path
                 .removePrefix(collectedInfo.file.project.basePath.toString())
