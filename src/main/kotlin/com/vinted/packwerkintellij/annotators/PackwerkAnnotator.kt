@@ -107,7 +107,7 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
     }
 
     private fun getRootForFile(file: PsiFile) : VirtualFile? {
-        val application = ApplicationManager.getApplication();
+        val application = ApplicationManager.getApplication()
         var root: VirtualFile? = null
 
         application.runReadAction {
