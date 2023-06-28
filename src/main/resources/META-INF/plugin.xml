@@ -7,8 +7,6 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.ruby</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
-
     <extensions defaultExtensionNs="com.intellij">
         <externalAnnotator language="ruby"
                            implementationClass="com.vinted.packwerkintellij.annotators.PackwerkAnnotator"/>
