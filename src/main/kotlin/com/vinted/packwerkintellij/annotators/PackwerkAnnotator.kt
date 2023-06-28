@@ -25,7 +25,10 @@ const val PACKWERK_BINSTUB_PATH = "bin/packwerk"
 private val violationPattern = Regex("^[^:]+:([0-9]+):([0-9]+)$")
 
 internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, PackwerkAnnotator.Results>() {
-    internal class State(var file: PsiFile)
+    internal class State(
+        var file: PsiFile,
+        var packwerkPath: String
+    )
     internal class Results(var problems: List<Problem>)
     internal class Problem(var line: Int, var column: Int, var explanation: String)
 
@@ -46,20 +49,14 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
             return null
         }
 
-        val binstubFile = root.findFileByRelativePath(PACKWERK_BINSTUB_PATH)
-        if (binstubFile == null) {
-            thisLogger().debug("Not linting because Packwerk binstub was not found")
-            return null
-        }
-
-        return State(file)
+        return State(file, settings.packwerkPath)
     }
 
     override fun doAnnotate(collectedInfo: State): Results? {
         val root: VirtualFile = getRootForFile(collectedInfo.file) ?: return null
         val relativePath = VfsUtilCore.getRelativePath(collectedInfo.file.virtualFile, root) ?: return null
 
-        val cmd = GeneralCommandLine(PACKWERK_BINSTUB_PATH)
+        val cmd = GeneralCommandLine(collectedInfo.packwerkPath)
             .withWorkDirectory(root.path)
             .withCharset(Charset.forName("UTF-8"))
             .withParameters("check", relativePath)
