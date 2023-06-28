@@ -12,5 +12,11 @@
     <extensions defaultExtensionNs="com.intellij">
         <externalAnnotator language="ruby"
                            implementationClass="com.vinted.packwerkintellij.annotators.PackwerkAnnotator"/>
+
+        <projectConfigurable
+            parentId="tools"
+            instance="com.vinted.packwerkintellij.PackwerkSettingsConfigurable"
+            id="com.vinted.packwerkintellij.PackwerkSettingsConfigurable"
+            displayName="Packwerk"/>
     </extensions>
 </idea-plugin>
