@@ -10,15 +10,15 @@ import com.intellij.ui.dsl.builder.panel
 
 class PackwerkSettingsConfigurable(private val project: Project) : BoundConfigurable("Packwerk Settings") {
     private var packwerkPath: String = ""
-    private var runOnSave = true
+    private var enabled = true
 
     override fun createPanel(): DialogPanel = panel {
         val settings = project.service<PackwerkSettingsState>()
         packwerkPath = settings.packwerkPath
-        runOnSave = settings.runOnSave
+        enabled = settings.enabled
 
         row() {
-            checkBox("Run Packwerk on save").bindSelected(::runOnSave)
+            checkBox("Enable linter").bindSelected(::enabled)
         }
         row("Packwerk executable path:") {
             textField().bindText(::packwerkPath)
@@ -26,7 +26,7 @@ class PackwerkSettingsConfigurable(private val project: Project) : BoundConfigur
 
         onApply {
             settings.packwerkPath = packwerkPath
-            settings.runOnSave = runOnSave
+            settings.enabled = enabled
         }
     }
 }

@@ -5,6 +5,7 @@ import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.ExternalAnnotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.roots.ProjectFileIndex
@@ -12,6 +13,7 @@ import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
+import com.vinted.packwerkintellij.PackwerkSettingsState
 import org.intellij.markdown.lexer.push
 import org.jetbrains.plugins.ruby.ruby.lang.psi.references.RColonReference
 import org.jetbrains.plugins.ruby.ruby.lang.psi.variables.RConstant
@@ -28,6 +30,11 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
     internal class Problem(var line: Int, var column: Int, var explanation: String)
 
     override fun collectInformation(file: PsiFile): State? {
+        val settings = file.project.service<PackwerkSettingsState>()
+        if (!settings.enabled) {
+            return null
+        }
+
         if (FileDocumentManager.getInstance().isFileModified(file.virtualFile)) {
             thisLogger().debug("Not linting because the file is modified")
             return null

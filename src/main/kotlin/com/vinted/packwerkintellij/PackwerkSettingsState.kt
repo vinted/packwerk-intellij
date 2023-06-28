@@ -9,7 +9,7 @@ import com.intellij.openapi.components.*
 @Service
 class PackwerkSettingsState : PersistentStateComponent<PackwerkSettingsState> {
     var packwerkPath: String = "bin/packwerk"
-    var runOnSave = false
+    var enabled = true
 
     override fun getState(): PackwerkSettingsState {
         return this
@@ -17,6 +17,6 @@ class PackwerkSettingsState : PersistentStateComponent<PackwerkSettingsState> {
 
     override fun loadState(state: PackwerkSettingsState) {
         this.packwerkPath = state.packwerkPath
-        this.runOnSave = state.runOnSave
+        this.enabled = state.enabled
     }
 }
