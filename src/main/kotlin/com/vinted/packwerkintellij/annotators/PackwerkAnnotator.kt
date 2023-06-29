@@ -20,8 +20,6 @@ import org.jetbrains.plugins.ruby.ruby.lang.psi.variables.RConstant
 import java.nio.charset.Charset
 import java.util.*
 
-const val PACKWERK_BINSTUB_PATH = "bin/packwerk"
-
 private val violationPattern = Regex("^[^:]+:([0-9]+):([0-9]+)$")
 
 internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, PackwerkAnnotator.Results>() {
