@@ -17,8 +17,8 @@ class PackwerkSettingsConfigurable(private val project: Project) : BoundConfigur
         packwerkPath = settings.packwerkPath
         enabled = settings.enabled
 
-        row() {
-            checkBox("Enable linter").bindSelected(::enabled)
+        row("Linter options:") {
+            checkBox("Run Packwerk check").bindSelected(::enabled)
         }
         row("Packwerk executable path:") {
             textField().bindText(::packwerkPath)
