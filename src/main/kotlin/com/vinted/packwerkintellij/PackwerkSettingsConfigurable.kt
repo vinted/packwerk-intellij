@@ -17,11 +17,17 @@ class PackwerkSettingsConfigurable(private val project: Project) : BoundConfigur
         packwerkPath = settings.packwerkPath
         enabled = settings.enabled
 
-        row("Linter options:") {
-            checkBox("Run Packwerk check").bindSelected(::enabled)
+        row {
+            checkBox("Run Packwerk check")
+                .bindSelected(::enabled)
+                .comment("Note: The linter can only run when the current file is saved to disk.")
         }
-        row("Packwerk executable path:") {
-            textField().bindText(::packwerkPath)
+        row("Packwerk path:") {
+            textField()
+                .bindText(::packwerkPath)
+                .comment("Note: This only accepts a single path. " +
+                        "The path can be absolute or relative to the project root. " +
+                        "Shell expansions or multiple arguments are not supported.")
         }
 
         onApply {
