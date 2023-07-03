@@ -1,5 +1,6 @@
 package com.vinted.packwerkintellij.annotators
 
+import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.ExternalAnnotator
@@ -59,7 +60,14 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
             .withCharset(Charset.forName("UTF-8"))
             .withParameters("check", relativePath)
 
-        val process = cmd.createProcess()
+        val process: Process
+        try {
+            process = cmd.createProcess()
+        } catch (e: ExecutionException) {
+            thisLogger().debug("Not linting because Packwerk could not be executed", e)
+            return null
+        }
+
         val scanner = Scanner(process.inputStream)
         val problems = ArrayList<Problem>()
 
