@@ -74,8 +74,8 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
         while (scanner.hasNextLine()) {
             val matches = violationPattern.matchEntire(scanner.nextLine())
             if (matches != null) {
-                val lineNumber = Integer.valueOf(matches.groupValues[1]) - 1
-                val columnNumber = Integer.valueOf(matches.groupValues[2]) - 1
+                val lineNumber = (Integer.valueOf(matches.groupValues[1]) - 1).coerceAtLeast(0)
+                val columnNumber = (Integer.valueOf(matches.groupValues[2]) - 1).coerceAtLeast(0)
                 val explanation = scanner.nextLine()
 
                 problems.push(Problem(lineNumber, columnNumber, explanation))
