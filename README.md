@@ -1,4 +1,4 @@
-# Packwerk Linter for RubyMine
+# Packwerk for RubyMine
 
 ![Build](https://github.com/vinted/packwerk-intellij/workflows/Build/badge.svg)
 
