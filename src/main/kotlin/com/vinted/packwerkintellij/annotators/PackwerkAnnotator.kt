@@ -30,7 +30,8 @@ private val runTimeoutUnit = TimeUnit.SECONDS
 internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, PackwerkAnnotator.Results>() {
     internal class State(
         var file: PsiFile,
-        var packwerkPath: String
+        var packwerkPath: String,
+        var fileText: String?,
     )
     internal class Results(var problems: List<Problem>)
     internal class Problem(var line: Int, var column: Int, var explanation: String)
@@ -41,7 +42,7 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
             return null
         }
 
-        if (FileDocumentManager.getInstance().isFileModified(file.virtualFile)) {
+        if (!settings.lintUnsavedFiles && FileDocumentManager.getInstance().isFileModified(file.virtualFile)) {
             thisLogger().debug("Not linting because the file is modified")
             return null
         }
@@ -52,17 +53,30 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
             return null
         }
 
-        return State(file, settings.packwerkPath)
+        val fileText = if (settings.lintUnsavedFiles) {
+            file.text
+        } else {
+            null
+        }
+
+        return State(file, settings.packwerkPath, fileText)
     }
 
     override fun doAnnotate(collectedInfo: State): Results? {
         val root: VirtualFile = getRootForFile(collectedInfo.file) ?: return null
         val relativePath = VfsUtilCore.getRelativePath(collectedInfo.file.virtualFile, root) ?: return null
 
+        val useStdin = collectedInfo.fileText != null
+        val packwerkSubcommand = if (useStdin) {
+            "check-contents"
+        } else {
+            "check"
+        }
+
         val cmd = GeneralCommandLine(collectedInfo.packwerkPath)
             .withWorkDirectory(root.path)
             .withCharset(Charset.forName("UTF-8"))
-            .withParameters("check", relativePath)
+            .withParameters(packwerkSubcommand, relativePath)
 
         val process: Process
         try {
@@ -70,6 +84,12 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
         } catch (e: ExecutionException) {
             thisLogger().debug("Not linting because Packwerk could not be executed", e)
             return null
+        }
+
+        if (useStdin) {
+            process.outputStream.write(collectedInfo.fileText!!.toByteArray())
+            process.outputStream.flush()
+            process.outputStream.close()
         }
 
         if (!process.waitFor(runTimeout, runTimeoutUnit)) {

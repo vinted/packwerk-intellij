@@ -5,7 +5,8 @@
 <!-- Plugin description -->
 Runs Packwerk in the background and adds error annotations to Ruby source files.
 
-Note: The linter can only run when the current file is saved to disk.
+Note: By default, the linter can only run when the current file is saved to disk. There's an experimental mode
+to enable as-you-type linting, but it's not widely supported.
 <!-- Plugin description end -->
 
 ## Installation
