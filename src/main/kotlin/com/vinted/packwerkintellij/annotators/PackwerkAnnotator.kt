@@ -20,8 +20,12 @@ import org.jetbrains.plugins.ruby.ruby.lang.psi.references.RColonReference
 import org.jetbrains.plugins.ruby.ruby.lang.psi.variables.RConstant
 import java.nio.charset.Charset
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 private val violationPattern = Regex("^[^:]+:([0-9]+):([0-9]+)$")
+
+private const val runTimeout: Long = 30
+private val runTimeoutUnit = TimeUnit.SECONDS
 
 internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, PackwerkAnnotator.Results>() {
     internal class State(
@@ -65,6 +69,12 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
             process = cmd.createProcess()
         } catch (e: ExecutionException) {
             thisLogger().debug("Not linting because Packwerk could not be executed", e)
+            return null
+        }
+
+        if (!process.waitFor(runTimeout, runTimeoutUnit)) {
+            process.destroyForcibly().waitFor()
+            thisLogger().warn("Packwerk process timed out")
             return null
         }
 
