@@ -57,8 +57,13 @@ jobs:
         run: |
           ./gradlew patchChangelog --release-note="$CHANGELOG"
 
+      # Build plugin
+      - name: Build plugin
+        run: ./gradlew buildPlugin
+
       # Publish the plugin to the Marketplace
       - name: Publish Plugin
+        if: false
         env:
           PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
           CERTIFICATE_CHAIN: ${{ secrets.CERTIFICATE_CHAIN }}
