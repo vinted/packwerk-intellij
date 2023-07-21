@@ -11,28 +11,41 @@ import com.intellij.ui.dsl.builder.panel
 class PackwerkSettingsConfigurable(private val project: Project) : BoundConfigurable("Packwerk Settings") {
     private var packwerkPath: String = ""
     private var enabled = true
+    private var lintUnsavedFiles = false
 
     override fun createPanel(): DialogPanel = panel {
         val settings = project.service<PackwerkSettingsState>()
         packwerkPath = settings.packwerkPath
         enabled = settings.enabled
+        lintUnsavedFiles = settings.lintUnsavedFiles
 
-        row {
-            checkBox("Run Packwerk check")
-                .bindSelected(::enabled)
-                .comment("Note: The linter can only run when the current file is saved to disk.")
-        }
         row("Packwerk path:") {
             textField()
                 .bindText(::packwerkPath)
-                .comment("Note: This only accepts a single path. " +
-                        "The path can be absolute or relative to the project root. " +
-                        "Shell expansions or multiple arguments are not supported.")
+                .comment(
+                    "Note: This only accepts a single path. " +
+                            "The path can be absolute or relative to the project root. " +
+                            "Shell expansions or multiple arguments are not supported."
+                )
+        }
+        row {
+            checkBox("Lint Ruby files")
+                .bindSelected(::enabled)
+        }
+        row {
+            checkBox("Experimental: Lint unsaved files")
+                .bindSelected(::lintUnsavedFiles)
+                .comment(
+                    "This enables as-you-type linting. " +
+                            "Warning: this requires the linter to support the 'check-contents' command " +
+                            "which is currently only supported by Packs and not Packwerk."
+                )
         }
 
         onApply {
             settings.packwerkPath = packwerkPath
             settings.enabled = enabled
+            settings.lintUnsavedFiles = lintUnsavedFiles
         }
     }
 }
