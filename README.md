@@ -2,6 +2,8 @@
 
 ![Build](https://github.com/vinted/packwerk-intellij/workflows/Build/badge.svg)
 
+<img src="images/screenshot.png" width="961">
+
 <!-- Plugin description -->
 Runs Packwerk in the background and adds error annotations to Ruby source files.
 
