@@ -12,12 +12,14 @@ class PackwerkSettingsConfigurable(private val project: Project) : BoundConfigur
     private var packwerkPath: String = ""
     private var enabled = true
     private var lintUnsavedFiles = false
+    private var ignoreRecordedViolations = false
 
     override fun createPanel(): DialogPanel = panel {
         val settings = project.service<PackwerkSettingsState>()
         packwerkPath = settings.packwerkPath
         enabled = settings.enabled
         lintUnsavedFiles = settings.lintUnsavedFiles
+        ignoreRecordedViolations = settings.ignoreRecordedViolations
 
         row("Packwerk path:") {
             textField()
@@ -41,11 +43,20 @@ class PackwerkSettingsConfigurable(private val project: Project) : BoundConfigur
                             "which is currently only supported by Packs and not Packwerk."
                 )
         }
+        row {
+            checkBox("Experimental: Ignore recorded violations")
+                .bindSelected(::ignoreRecordedViolations)
+                .comment(
+                    "Show violations in the editor even if they're recorded in package_todo.yml. " +
+                            "Warning: not widely supported."
+                )
+        }
 
         onApply {
             settings.packwerkPath = packwerkPath
             settings.enabled = enabled
             settings.lintUnsavedFiles = lintUnsavedFiles
+            settings.ignoreRecordedViolations = ignoreRecordedViolations
         }
     }
 }
