@@ -32,7 +32,9 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
         var file: PsiFile,
         var packwerkPath: String,
         var fileText: String?,
+        var ignoreRecordedViolations: Boolean,
     )
+
     internal class Results(var problems: List<Problem>)
     internal class Problem(var line: Int, var column: Int, var explanation: String)
 
@@ -59,24 +61,33 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
             null
         }
 
-        return State(file, settings.packwerkPath, fileText)
+        return State(file, settings.packwerkPath, fileText, settings.ignoreRecordedViolations)
     }
 
     override fun doAnnotate(collectedInfo: State): Results? {
         val root: VirtualFile = getRootForFile(collectedInfo.file) ?: return null
         val relativePath = VfsUtilCore.getRelativePath(collectedInfo.file.virtualFile, root) ?: return null
 
+        val cmdParams = ArrayList<String>()
+
         val useStdin = collectedInfo.fileText != null
-        val packwerkSubcommand = if (useStdin) {
-            "check-contents"
+        if (useStdin) {
+            cmdParams.push("check-contents")
         } else {
-            "check"
+            cmdParams.push("check")
         }
+
+        if (collectedInfo.ignoreRecordedViolations) {
+            cmdParams.push("--ignore-recorded-violations")
+        }
+
+        cmdParams.push("--")
+        cmdParams.push(relativePath)
 
         val cmd = GeneralCommandLine(collectedInfo.packwerkPath)
             .withWorkDirectory(root.path)
             .withCharset(Charset.forName("UTF-8"))
-            .withParameters(packwerkSubcommand, relativePath)
+            .withParameters(cmdParams)
 
         val process: Process
         try {
@@ -137,7 +148,9 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
                 el = el.parent
             }
 
-            if (el == null) { el = file }
+            if (el == null) {
+                el = file
+            }
 
             holder
                 .newAnnotation(HighlightSeverity.ERROR, problem.explanation)
@@ -146,7 +159,7 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
         }
     }
 
-    private fun getRootForFile(file: PsiFile) : VirtualFile? {
+    private fun getRootForFile(file: PsiFile): VirtualFile? {
         val application = ApplicationManager.getApplication()
         var root: VirtualFile? = null
 

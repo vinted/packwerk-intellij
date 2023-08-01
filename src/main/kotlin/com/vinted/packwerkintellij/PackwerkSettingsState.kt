@@ -11,6 +11,7 @@ class PackwerkSettingsState : PersistentStateComponent<PackwerkSettingsState> {
     var packwerkPath: String = "bin/packwerk"
     var enabled = true
     var lintUnsavedFiles = false
+    var ignoreRecordedViolations = false
 
     override fun getState(): PackwerkSettingsState {
         return this
@@ -20,5 +21,6 @@ class PackwerkSettingsState : PersistentStateComponent<PackwerkSettingsState> {
         this.packwerkPath = state.packwerkPath
         this.enabled = state.enabled
         this.lintUnsavedFiles = state.lintUnsavedFiles
+        this.ignoreRecordedViolations = state.ignoreRecordedViolations
     }
 }

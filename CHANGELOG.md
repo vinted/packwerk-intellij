@@ -5,6 +5,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Experimental mode to ignore recorded violations (#9)
+
 ## [0.0.4] - 2023-07-21
 
 ### Added
