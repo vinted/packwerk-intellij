@@ -12,7 +12,12 @@ to enable as-you-type linting, but it's not widely supported.
 <!-- Plugin description end -->
 
 ## Installation
-  
+
+- Using IDE built-in plugin system:
+
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Packwerk"</kbd> >
+  <kbd>Install</kbd>
+
 - Manually:
 
   Download the [latest release](https://github.com/vinted/packwerk-intellij/releases/latest) and install it manually using
