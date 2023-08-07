@@ -15,7 +15,7 @@ to enable as-you-type linting, but it's not widely supported.
 
 ## Installation
 
-- Using IDE built-in plugin system:
+- Using the IDE built-in plugin system:
 
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Packwerk"</kbd> >
   <kbd>Install</kbd>
