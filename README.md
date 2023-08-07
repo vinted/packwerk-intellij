@@ -1,6 +1,8 @@
 # Packwerk for RubyMine
 
 ![Build](https://github.com/vinted/packwerk-intellij/workflows/Build/badge.svg)
+[![Version](https://img.shields.io/jetbrains/plugin/v/22420.svg)](https://plugins.jetbrains.com/plugin/22420-packwerk)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/22420.svg)](https://plugins.jetbrains.com/plugin/22420-packwerk)
 
 <img src="images/screenshot.png" width="961">
 
