@@ -5,10 +5,13 @@ import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.ExternalAnnotator
 import com.intellij.lang.annotation.HighlightSeverity
+import com.intellij.notification.NotificationGroupManager
+import com.intellij.notification.NotificationType
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
@@ -94,6 +97,10 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
             process = cmd.createProcess()
         } catch (e: ExecutionException) {
             thisLogger().debug("Not linting because Packwerk could not be executed", e)
+
+            // FIXME: this will annoy users who have non-Packwerk projects
+            notifyError(collectedInfo.file.project, e.message ?: "")
+
             return null
         }
 
@@ -170,5 +177,12 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
         }
 
         return root
+    }
+
+    private fun notifyError(project: Project, content: String) {
+        NotificationGroupManager.getInstance()
+            .getNotificationGroup("Packwerk Notification Group")
+            .createNotification("Packwerk execution error", content, NotificationType.ERROR)
+            .notify(project)
     }
 }
