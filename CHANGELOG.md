@@ -5,7 +5,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## Fixed
+### Fixed
 - Top-level constant references are now highlighted correctly (#18)
 
 ## [0.0.5] - 2023-08-01
