@@ -5,6 +5,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.6] - 2023-08-10
+
 ### Fixed
 - Top-level constant references are now highlighted correctly (#18)
 
@@ -19,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Experimental mode to lint unsaved files (#6)
 - 30 second execution timeout (#5)
 
-[Unreleased]: https://github.com/vinted/packwerk-intellij/compare/v0.0.5...HEAD
+[Unreleased]: https://github.com/vinted/packwerk-intellij/compare/v0.0.6...HEAD
+[0.0.6]: https://github.com/vinted/packwerk-intellij/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/vinted/packwerk-intellij/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/vinted/packwerk-intellij/commits/v0.0.4
