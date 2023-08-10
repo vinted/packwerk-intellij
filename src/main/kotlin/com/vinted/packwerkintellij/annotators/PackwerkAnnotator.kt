@@ -17,6 +17,7 @@ import com.intellij.psi.PsiFile
 import com.vinted.packwerkintellij.PackwerkSettingsState
 import org.intellij.markdown.lexer.push
 import org.jetbrains.plugins.ruby.ruby.lang.psi.references.RColonReference
+import org.jetbrains.plugins.ruby.ruby.lang.psi.references.RTopConstReference
 import org.jetbrains.plugins.ruby.ruby.lang.psi.variables.RConstant
 import java.nio.charset.Charset
 import java.util.*
@@ -144,7 +145,10 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
             var el = file.findElementAt(offset)
 
             // Expand compound constants (e.g. Foo::Bar)
-            while (el != null && (el.parent is RConstant || el.parent is RColonReference)) {
+            while (
+                el != null &&
+                (el.parent is RConstant || el.parent is RColonReference || el.parent is RTopConstReference)
+            ) {
                 el = el.parent
             }
 
