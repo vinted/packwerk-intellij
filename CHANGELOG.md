@@ -5,6 +5,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Support for RubyMine 2024.1 (#24)
+
 ## [0.0.7] - 2023-12-19
 
 ### Added
