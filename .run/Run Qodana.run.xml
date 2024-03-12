@@ -1,11 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run Qodana" type="GradleRunConfiguration" factoryName="Gradle">
     <ExternalSystemSettings>
-      <option name="env">
-        <map>
-          <entry key="QODANA_SHOW_REPORT" value="true" />
-        </map>
-      </option>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
       <option name="externalSystemIdString" value="GRADLE" />
@@ -14,7 +9,9 @@
         <list />
       </option>
       <option name="taskNames">
-        <list />
+        <list>
+          <option value="qodanaScan" />
+        </list>
       </option>
       <option name="vmOptions" />
     </ExternalSystemSettings>
