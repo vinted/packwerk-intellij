@@ -65,7 +65,9 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
         return State(file, settings.packwerkPath, fileText, settings.ignoreRecordedViolations)
     }
 
-    override fun doAnnotate(collectedInfo: State): Results? {
+    override fun doAnnotate(collectedInfo: State?): Results? {
+        val collectedInfo = collectedInfo ?: return null
+
         val root: VirtualFile = getRootForFile(collectedInfo.file) ?: return null
         val relativePath = VfsUtilCore.getRelativePath(collectedInfo.file.virtualFile, root) ?: return null
 
@@ -127,7 +129,9 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
         return Results(problems)
     }
 
-    override fun apply(file: PsiFile, annotationResult: Results, holder: AnnotationHolder) {
+    override fun apply(file: PsiFile, annotationResult: Results?, holder: AnnotationHolder) {
+        val annotationResult = annotationResult ?: return
+
         val document = PsiDocumentManager.getInstance(file.project).getDocument(file) ?: return
 
         for (problem in annotationResult.problems) {
