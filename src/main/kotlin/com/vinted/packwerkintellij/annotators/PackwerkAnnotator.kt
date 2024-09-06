@@ -19,6 +19,7 @@ import org.intellij.markdown.lexer.push
 import org.jetbrains.plugins.ruby.ruby.lang.psi.references.RColonReference
 import org.jetbrains.plugins.ruby.ruby.lang.psi.references.RTopConstReference
 import org.jetbrains.plugins.ruby.ruby.lang.psi.variables.RConstant
+import java.io.IOException
 import java.nio.charset.Charset
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -101,9 +102,14 @@ internal class PackwerkAnnotator : ExternalAnnotator<PackwerkAnnotator.State, Pa
         }
 
         if (useStdin) {
-            process.outputStream.write(collectedInfo.fileText!!.toByteArray())
-            process.outputStream.flush()
-            process.outputStream.close()
+            try {
+                process.outputStream.write(collectedInfo.fileText!!.toByteArray())
+                process.outputStream.flush()
+                process.outputStream.close()
+            } catch (e: IOException) {
+                thisLogger().warn("Failed to write to Packwerk process", e)
+                return null
+            }
         }
 
         if (!process.waitFor(runTimeout, runTimeoutUnit)) {
