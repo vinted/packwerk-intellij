@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix Broken pipe error when running Packwerk (#34)
+
 ## [0.0.9] - 2024-06-14
 
 ### Added
