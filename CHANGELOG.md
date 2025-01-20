@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.12] - 2025-01-20
+
 - Support for RubyMine 2025.1 and up (#38)
 
 ## [0.0.11] - 2024-11-08
@@ -57,7 +59,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Experimental mode to lint unsaved files (#6)
 - 30 second execution timeout (#5)
 
-[Unreleased]: https://github.com/vinted/packwerk-intellij/compare/v0.0.11...HEAD
+[Unreleased]: https://github.com/vinted/packwerk-intellij/compare/v0.0.12...HEAD
+[0.0.12]: https://github.com/vinted/packwerk-intellij/compare/v0.0.11...v0.0.12
 [0.0.11]: https://github.com/vinted/packwerk-intellij/compare/v0.0.10...v0.0.11
 [0.0.10]: https://github.com/vinted/packwerk-intellij/compare/v0.0.9...v0.0.10
 [0.0.9]: https://github.com/vinted/packwerk-intellij/compare/v0.0.8...v0.0.9
