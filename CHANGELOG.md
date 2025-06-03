@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Drop support for RubyMine 2024.1 and older (#40)
+
 ## [0.0.12] - 2025-01-20
 
 - Support for RubyMine 2025.1 and up (#38)
