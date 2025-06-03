@@ -6,7 +6,7 @@ import com.intellij.openapi.components.*
     name = "com.vinted.packwerkintellij.ApplicationSettingsState",
     storages = [Storage("PackwerkSettings.xml")]
 )
-@Service
+@Service(Service.Level.PROJECT)
 class PackwerkSettingsState : PersistentStateComponent<PackwerkSettingsState> {
     var packwerkPath: String = "bin/packwerk"
     var enabled = true
