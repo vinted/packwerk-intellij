@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.13] - 2025-06-04
-
 - Drop support for RubyMine 2024.1 and older (#40)
 - Fix possible issue with Packwerk settings being shared across projects (#41)
 
