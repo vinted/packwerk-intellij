@@ -9,6 +9,7 @@ intelliJPlatform = "2.5.0"
 kotlin = "2.1.20"
 kover = "0.9.1"
 qodana = "2024.3.4"
+pluginVerifier = "1.382"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
